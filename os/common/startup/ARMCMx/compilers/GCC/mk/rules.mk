@@ -75,7 +75,7 @@ ifeq ($(DEPDIR),.)
   DEPDIR = .dep
 endif
 
-OUTFILES := $(BUILDDIR)/$(PROJECT).elf \
+OUTFILES += $(BUILDDIR)/$(PROJECT).elf \
             $(BUILDDIR)/$(PROJECT).hex \
             $(BUILDDIR)/$(PROJECT).bin \
             $(BUILDDIR)/$(PROJECT).dmp \
@@ -103,7 +103,8 @@ TCCOBJS   := $(addprefix $(OBJDIR)/, $(notdir $(patsubst %.cc, %.o, $(filter %.c
 ASMOBJS   := $(addprefix $(OBJDIR)/, $(notdir $(ASMSRC:.s=.o)))
 ASMXOBJS  := $(addprefix $(OBJDIR)/, $(notdir $(ASMXSRC:.S=.o)))
 #OBJS      := $(ASMXOBJS) $(ASMOBJS) $(ACOBJS) $(TCOBJS) $(ACPPOBJS) $(TCPPOBJS)
-OBJS      := $(ASMXOBJS) $(ASMOBJS) $(ACOBJS) $(TCOBJS) $(ACPPOBJS) $(TCPPOBJS) $(TCCOBJS)
+# ADDITIONALOBJS is available for the user to add special objects that are not built using the regular rules
+OBJS      := $(ASMXOBJS) $(ASMOBJS) $(ACOBJS) $(TCOBJS) $(ACPPOBJS) $(TCPPOBJS) $(TCCOBJS) $(ADDITIONALOBJS)
 
 # Paths
 IINCDIR   := $(patsubst %,-I%,$(INCDIR) $(DINCDIR) $(UINCDIR))
@@ -137,6 +138,10 @@ VPATH     = $(SRCPATHS)
 #
 # Makefile rules
 #
+
+# the first goal in the Makefile becomes the default goal
+# explicitly set it to all so we can define goals in the make rule files
+.DEFAULT_GOAL :=  all
 
 all: PRE_MAKE_ALL_RULE_HOOK $(OBJS) $(OUTFILES) POST_MAKE_ALL_RULE_HOOK
 
