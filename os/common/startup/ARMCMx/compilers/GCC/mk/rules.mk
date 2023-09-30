@@ -79,7 +79,7 @@ ifeq ($(DEPDIR),.)
   DEPDIR = .dep
 endif
 
-OUTFILES := $(BUILDDIR)/$(PROJECT).elf \
+OUTFILES += $(BUILDDIR)/$(PROJECT).elf \
             $(BUILDDIR)/$(PROJECT).hex \
             $(BUILDDIR)/$(PROJECT).bin \
             $(BUILDDIR)/$(PROJECT).dmp \
@@ -107,7 +107,7 @@ TCCOBJS   := $(addprefix $(OBJDIR)/, $(notdir $(patsubst %.cc, %.o, $(filter %.c
 ASMOBJS   := $(addprefix $(OBJDIR)/, $(notdir $(ASMSRC:.s=.o)))
 ASMXOBJS  := $(addprefix $(OBJDIR)/, $(notdir $(ASMXSRC:.S=.o)))
 #OBJS      := $(ASMXOBJS) $(ASMOBJS) $(ACOBJS) $(TCOBJS) $(ACPPOBJS) $(TCPPOBJS)
-OBJS      := $(ASMXOBJS) $(ASMOBJS) $(ACOBJS) $(TCOBJS) $(ACPPOBJS) $(TCPPOBJS) $(TCCOBJS)
+OBJS      := $(ASMXOBJS) $(ASMOBJS) $(ACOBJS) $(TCOBJS) $(ACPPOBJS) $(TCPPOBJS) $(TCCOBJS) $(ADDITIONALOBJS)
 
 # Paths
 IINCDIR   := $(sort $(patsubst %,-I%,$(INCDIR) $(DINCDIR) $(UINCDIR)))
@@ -141,6 +141,8 @@ VPATH     = $(SRCPATHS)
 #
 # Makefile rules
 #
+
+.DEFAULT_GOAL :=  all
 
 all: PRE_MAKE_ALL_RULE_HOOK $(OBJS) $(OUTFILES) POST_MAKE_ALL_RULE_HOOK
 
